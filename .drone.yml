@@ -35,6 +35,7 @@ steps:
       repo: registry.thedutchmc.nl/espocrm
       tags:
       - latest
+      dockerfile: ./espocrm_docker/apache/Dockerfile
       registry: registry.thedutchmc.nl
       context: ./espocrm_docker/apache/
   
@@ -49,6 +50,7 @@ steps:
       repo: registry.thedutchmc.nl/espocrm-cron
       tags:
       - latest
+      dockerfile: ./espocrm_docker/apache/Dockerfile
       registry: registry.thedutchmc.nl
       context: ./espocrm_docker/apache/
 
