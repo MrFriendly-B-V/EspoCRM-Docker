@@ -17,7 +17,7 @@ steps:
   - name: Clone Dockerfiles
     image: alpine/git
     commands:
-    - git clone https://github.com/MrFriendly-B-V/EspoCRM-Docker.git/custom_docker
+    - git clone https://github.com/MrFriendly-B-V/EspoCRM-Docker.git custom_docker
   
   - name: Clone EspoCRM-Docker
     image: alpine/git
@@ -28,6 +28,7 @@ steps:
     image: alpine
     commands:
     - mv custom_docker/Dockerfile.espocrm espocrm_docker/apache/Dockerfile
+    - cd espocrm_docker/apache/
 
   - name: Build EspoCRM Docker image
     image: plugins/docker
@@ -40,6 +41,7 @@ steps:
   - name: Move in EspoCRM-Cron Dockerfile 
     image: alpine
     commands:
+    - cd ../../
     - mv custom_docker/Dockerfile.espocrm-cron espocrm_docker/apache/Dockerfile
 
   - name: Build EspoCRM-Cron Docker image
