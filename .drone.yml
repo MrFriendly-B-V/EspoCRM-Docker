@@ -1,6 +1,6 @@
 kind: pipeline
 type: kubernetes
-name: espocrm
+name: espocrm-docker
 
 clone:
   disable: true
@@ -10,6 +10,8 @@ triggers:
   - cron
   cron:
   - nightly
+  branch:
+  - master
 
 steps:
   - name: Clone Dockerfiles
