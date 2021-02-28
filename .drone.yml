@@ -66,3 +66,12 @@ steps:
     commands:
       - kubectl set image deployment/espocrm-deployment espocrm=registry.thedutchmc.nl/espocrm:latest
       - kubectl set image deployment/espocrm-deployment espocrm-cron=registry.thedutchmc.nl/espocrm-cron:latest
+      
+- name: slack
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: discord_webhook
+    username: Drone CI/CD - EspoCRM Docker Image 
+  when:
+    status: [ success, failure ]
