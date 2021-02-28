@@ -28,7 +28,6 @@ steps:
     image: alpine
     commands:
     - mv custom_docker/Dockerfile.espocrm espocrm_docker/apache/Dockerfile
-    - cd espocrm_docker/apache/
 
   - name: Build EspoCRM Docker image
     image: plugins/docker
@@ -37,11 +36,11 @@ steps:
       tags:
       - latest
       registry: registry.thedutchmc.nl
+      context: ./espocrm_docker/apache/
   
   - name: Move in EspoCRM-Cron Dockerfile 
     image: alpine
     commands:
-    - cd ../../
     - mv custom_docker/Dockerfile.espocrm-cron espocrm_docker/apache/Dockerfile
 
   - name: Build EspoCRM-Cron Docker image
@@ -51,6 +50,7 @@ steps:
       tags:
       - latest
       registry: registry.thedutchmc.nl
+      context: ./espocrm_docker/apache/
 
   - name: Deploy to Kubernetes
     image: sinlead/drone-kubectl
