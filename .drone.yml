@@ -1,0 +1,62 @@
+kind: pipeline
+type: kubernetes
+name: espocrm
+
+clone:
+  disable: true
+
+triggers:
+  event:
+  - cron
+  cron:
+  - nightly
+
+steps:
+  - name: Clone Dockerfiles
+    image: alpine/git
+    commands:
+    - git clone https://github.com/MrFriendly-B-V/EspoCRM-Docker.git/custom_docker
+  
+  - name: Clone EspoCRM-Docker
+    image: alpine/git
+    commands:
+    - git clone https://github.com/espocrm/docker.git espocrm_docker
+
+  - name: Move in EspoCRM Dockerfile
+    image: alpine
+    commands:
+    - mv custom_docker/Dockerfile.espocrm espocrm_docker/apache/Dockerfile
+
+  - name: Build EspoCRM Docker image
+    image: plugins/docker
+    settings:
+      repo: registry.thedutchmc.nl/espocrm
+      tags:
+      - latest
+      registry: registry.thedutchmc.nl
+  
+  - name: Move in EspoCRM-Cron Dockerfile 
+    image: alpine
+    commands:
+    - mv custom_docker/Dockerfile.espocrm-cron espocrm_docker/apache/Dockerfile
+
+  - name: Build EspoCRM-Cron Docker image
+    image: plugins/docker
+    settings:
+      repo: registry.thedutchmc.nl/espocrm-cron
+      tags:
+      - latest
+      registry: registry.thedutchmc.nl
+
+  - name: Deploy to Kubernetes
+    image: sinlead/drone-kubectl
+    settings:
+      kubernetes_server:
+        from_secret: k8s_server
+      kubernetes_cert:
+        from_secret: k8s_cert
+      kubernetes_token:
+        from_secret: k8s_token
+    commands:
+      - kubectl set image deployment/espocrm-deployment espocrm=registry.thedutchmc.nl/espocrm:latest
+      - kubectl set image deployment/espocrm-deployment espocrm-cron=registry.thedutchmc.nl/espocrm-cron:latest
