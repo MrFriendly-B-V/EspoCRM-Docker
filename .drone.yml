@@ -2,9 +2,6 @@ kind: pipeline
 type: kubernetes
 name: espocrm-docker
 
-clone:
-  disable: true
-
 triggers:
   event:
   - cron
@@ -13,46 +10,13 @@ triggers:
   branch:
   - master
 
-steps:
-  - name: Clone Dockerfiles
-    image: alpine/git
-    commands:
-    - git clone https://github.com/MrFriendly-B-V/EspoCRM-Docker.git custom_docker
-  
-  - name: Clone EspoCRM-Docker
-    image: alpine/git
-    commands:
-    - git clone https://github.com/espocrm/docker.git espocrm_docker
-
-  - name: Move in EspoCRM Dockerfile
-    image: alpine
-    commands:
-    - mv custom_docker/Dockerfile.espocrm espocrm_docker/apache/Dockerfile
-
   - name: Build EspoCRM Docker image
     image: plugins/docker
     settings:
       repo: registry.thedutchmc.nl/espocrm
       tags:
       - latest
-      dockerfile: ./espocrm_docker/apache/Dockerfile
       registry: registry.thedutchmc.nl
-      context: ./espocrm_docker/apache/
-  
-  - name: Move in EspoCRM-Cron Dockerfile 
-    image: alpine
-    commands:
-    - mv custom_docker/Dockerfile.espocrm-cron espocrm_docker/apache/Dockerfile
-
-  - name: Build EspoCRM-Cron Docker image
-    image: plugins/docker
-    settings:
-      repo: registry.thedutchmc.nl/espocrm-cron
-      tags:
-      - latest
-      dockerfile: ./espocrm_docker/apache/Dockerfile
-      registry: registry.thedutchmc.nl
-      context: ./espocrm_docker/apache/
 
   - name: Deploy to Kubernetes
     image: sinlead/drone-kubectl
