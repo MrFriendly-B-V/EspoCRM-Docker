@@ -30,7 +30,6 @@ steps:
         from_secret: k8s_token
     commands:
       - kubectl set image deployment/espocrm-deployment espocrm=registry.thedutchmc.nl/espocrm:latest
-      - kubectl set image deployment/espocrm-deployment espocrm-cron=registry.thedutchmc.nl/espocrm-cron:latest
       
   - name: slack
     image: plugins/slack

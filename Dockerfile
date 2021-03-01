@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ARG DEBIAN_FRONTEND=noninteractibe
+ARG DEBIAN_FRONTEND=noninteractive
 
 #Update and required dependency for adding a repository
 RUN apt-get update -y
