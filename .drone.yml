@@ -10,6 +10,7 @@ triggers:
   branch:
   - master
 
+steps:
   - name: Build EspoCRM Docker image
     image: plugins/docker
     settings:
