@@ -36,7 +36,7 @@ RUN apt-get install -y --no-install-recommends \
 RUN phpenmod imap mbstring
 
 #Crontab
-RUN echo "$(echo '* * * * * /usr/bin/php -f /var/www/html/espocrm/cron.php > /dev/null 2>&1' ; crontab -u root -l)" | crontab -u root -
+RUN echo "$(echo '* * * * * /usr/bin/php -f /var/www/espocrm/cron.php > /dev/null 2>&1' ; crontab -u root -l)" | crontab -u root -
 
 #Delete default nginx configs
 RUN rm -rf /etc/nginx/sites-available/*
