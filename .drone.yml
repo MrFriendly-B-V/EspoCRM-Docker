@@ -2,11 +2,7 @@ kind: pipeline
 type: kubernetes
 name: espocrm-docker
 
-triggers:
-  event:
-  - cron
-  cron:
-  - nightly
+trigger:
   branch:
   - master
 
@@ -20,16 +16,23 @@ steps:
       registry: docker-registry.k8s.array21.dev
 
   - name: Deploy to Kubernetes
-    image: sinlead/drone-kubectl
-    settings:
-      kubernetes_server:
-        from_secret: k8s_server
-      kubernetes_cert:
-        from_secret: k8s_cert
-      kubernetes_token:
-        from_secret: k8s_token
+    image: ubuntu:latest
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+      SSH_KEY:
+        from_secret: ssh_key
     commands:
-      - kubectl set image -n mrfriendly deployment/espocrm espocrm=docker-registry.k8s.array21.dev/espocrm:latest
+    - apt update && apt install -y openssh-client
+    
+    - mkdir -p $HOME/.ssh/
+    - eval `ssh-agent`
+    - echo "$SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
+
+    - rm -rf $HOME/.ssh/config
+    - touch $HOME/.ssh/config
+    - echo "Host *\n\tStrictHostKeyChecking no" > $HOME/.ssh/config
+    
+    - ssh droneci@192.168.2.4 kubectl kubectl set image -n mrfriendly deployment/espocrm espocrm=docker-registry.k8s.array21.dev/espocrm:latest
       
   - name: slack
     image: plugins/slack
