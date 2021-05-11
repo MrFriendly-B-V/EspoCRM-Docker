@@ -32,7 +32,7 @@ steps:
     - touch $HOME/.ssh/config
     - echo "Host *\n\tStrictHostKeyChecking no" > $HOME/.ssh/config
     
-    - ssh droneci@192.168.2.4 kubectl kubectl set image -n mrfriendly deployment/espocrm espocrm=docker-registry.k8s.array21.dev/espocrm:latest
+    - ssh droneci@192.168.2.4 kubectl set image -n mrfriendly deployment/espocrm espocrm=docker-registry.k8s.array21.dev/espocrm:latest
       
   - name: slack
     image: plugins/slack
