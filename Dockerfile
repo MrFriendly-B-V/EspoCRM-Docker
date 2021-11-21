@@ -30,6 +30,7 @@ RUN apt-get install -y --no-install-recommends \
         wget \
         unzip \
         cron \
+        libpcre2-8-0 \
         supervisor
 
 #Enable PHP modules
