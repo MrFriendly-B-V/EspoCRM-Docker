@@ -5,9 +5,9 @@ if [ -z "$(ls -A /var/www/espocrm)" ]
 then
     echo "EspoCRM not installed. Installing..."
 
-    wget https://www.espocrm.com/downloads/EspoCRM-6.1.4.zip -O /tmp/espocrm.zip
+    wget https://www.espocrm.com/downloads/EspoCRM-7.0.8.zip -O /tmp/espocrm.zip
     unzip /tmp/espocrm.zip -d /tmp/espocrm
-    mv /tmp/espocrm/EspoCRM-6.1.4/* /var/www/espocrm
+    mv /tmp/espocrm/EspoCRM-7.0.8/* /var/www/espocrm
 
     cd /var/www/espocrm
     chown -R www-data:www-data /var/www/espocrm
