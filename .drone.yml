@@ -3,7 +3,7 @@ type: docker
 name: espocrm-docker
 
 trigger:
-  branch:
+  event:
   - tag
 
 steps:
