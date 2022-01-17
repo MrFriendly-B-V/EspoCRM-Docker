@@ -1,10 +1,10 @@
 kind: pipeline
-type: kubernetes
+type: docker
 name: espocrm-docker
 
 trigger:
   branch:
-  - master
+  - tag
 
 steps:
   - name: Build EspoCRM Docker image
@@ -13,6 +13,7 @@ steps:
       repo: docker-registry.k8s.array21.dev/espocrm
       tags:
       - latest
+      - ${DRONE_TAG}
       registry: docker-registry.k8s.array21.dev
 
   - name: Deploy to Kubernetes
@@ -32,7 +33,7 @@ steps:
     - touch $HOME/.ssh/config
     - echo "Host *\n\tStrictHostKeyChecking no" > $HOME/.ssh/config
     
-    - ssh droneci@192.168.2.4 kubectl set image -n mrfriendly deployment/espocrm espocrm=docker-registry.k8s.array21.dev/espocrm:latest
+    - "ssh droneci@kube-ssh.intern.array21.dev kubectl set image -n mrfriendly deployment/espocrm espocrm=docker-registry.k8s.array21.dev/espocrm:${DRONE_TAG}"
       
   - name: slack
     image: plugins/slack
