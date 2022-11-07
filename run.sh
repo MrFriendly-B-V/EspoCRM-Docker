@@ -38,6 +38,9 @@ sed -i 's/post_max_size = .*/post_max_size = 20M/g' /etc/php/7.4/fpm/php.ini
 sed -i 's/memory_limit = .*/memory_limit = 256M/g' /etc/php/7.4/fpm/php.ini
 sed -i 's/upload_max_filesize = .*/upload_max_filesize = 20M/g' /etc/php/7.4/fpm/php.ini
 
+#Configure Cron
+echo "* * * * * cd /var/www/espocrm; /usr/bin/php -f cron.php > /dev/null 2>&1" | crontab -
+
 echo "Configuration complete"
 
 /usr/bin/supervisord -n -c /app/supervisord.conf
