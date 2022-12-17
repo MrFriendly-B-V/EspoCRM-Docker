@@ -37,7 +37,7 @@ RUN apt-get install -y --no-install-recommends \
 RUN phpenmod imap mbstring
 
 #Crontab
-RUN echo "$(echo '* * * * * /usr/bin/php -f /var/www/espocrm/cron.php > /dev/null 2>&1' ; crontab -u root -l)" | crontab -u root -
+RUN crontab -l | { cat; echo "* * * * * cd /var/www/espocrm; /usr/bin/php -f cron.php > /dev/null 2>&1"; } | crontab -
 
 #Delete default nginx configs
 RUN rm -rf /etc/nginx/sites-available/*
@@ -50,6 +50,7 @@ RUN ln -s /etc/nginx/sites-available/espocrm.conf /etc/nginx/sites-enabled/espoc
 #Copy in our script and the supervisord configuration file
 COPY ./run.sh /app/run.sh
 COPY ./supervisord.conf /app/supervisord.conf
+
 
 EXPOSE 80
 
