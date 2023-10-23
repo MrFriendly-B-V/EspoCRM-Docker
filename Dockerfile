@@ -1,31 +1,26 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-#Update and required dependency for adding a repository
-RUN apt-get update -y
-RUN apt-get install -y software-properties-common
-
-#Add the PHP repository and update
-RUN add-apt-repository -y ppa:ondrej/php
+# Update
 RUN apt-get update -y
 
 #Install required dependencies
 RUN apt-get install -y --no-install-recommends \
-        php7.4 \
-        php7.4-mysql \
-        php7.4-json \
-        php7.4-gd \
-        php7.4-zip \
-        php7.4-imap  \
-        php7.4-mbstring \
-        php7.4-curl \
-        php7.4-exif \
-        php7.4-xml \ 
-        php7.4-xmlwriter \
-        php7.4-posix \
-        php7.4-zmq \
-        php7.4-fpm \
+        php8.1 \
+        php8.1-mysql \
+        php-json \
+        php8.1-gd \
+        php8.1-zip \
+        php8.1-imap  \
+        php8.1-mbstring \
+        php8.1-curl \
+        php8.1-exif \
+        php8.1-xml \ 
+        php8.1-xmlwriter \
+        php8.1-posix \
+        php8.1-zmq \
+        php8.1-fpm \
         nginx \
         wget \
         unzip \
@@ -51,7 +46,5 @@ RUN ln -s /etc/nginx/sites-available/espocrm.conf /etc/nginx/sites-enabled/espoc
 COPY ./run.sh /app/run.sh
 COPY ./supervisord.conf /app/supervisord.conf
 
-
 EXPOSE 80
-
 ENTRYPOINT ["sh", "-c", "/app/run.sh"]
