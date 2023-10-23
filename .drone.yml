@@ -3,8 +3,6 @@ type: docker
 name: espocrm-docker
 
 trigger:
-  branch:
-  - master
   event:
   - cron
   - push
