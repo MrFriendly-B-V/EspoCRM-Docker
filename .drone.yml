@@ -23,3 +23,33 @@ steps:
       username: Drone CI/CD - EspoCRM Docker Image 
     when:
       status: [ failure ]
+
+---
+
+kind: pipeline
+type: docker
+name: default
+
+trigger:
+  event:
+  - cron
+  cron:
+  - nightly
+
+steps:
+  - name: Build EspoCRM Docker image
+    image: plugins/docker
+    settings:
+      repo: registry.mrfriendly.uk/espocrm
+      tags:
+      - latest
+      registry: registry.mrfriendly.uk
+
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: discord_webhook
+      username: Drone CI/CD - EspoCRM Docker Image 
+    when:
+      status: [ failure ]
