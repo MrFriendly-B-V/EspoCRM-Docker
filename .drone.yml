@@ -6,8 +6,6 @@ trigger:
   event:
   - cron
   - push
-  action:
-  - synchronized
   cron:
   - nightly
 
