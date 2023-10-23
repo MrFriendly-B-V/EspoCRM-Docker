@@ -1,2 +1,2 @@
 # EspoCRM-Docker
-Docker image for EspoCRM
+Docker image for running EspoCRM
